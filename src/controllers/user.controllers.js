@@ -47,6 +47,7 @@ const registerUser = asyncHandler( async (req, res) => {
     // console.log(req.files);
     // console.log(password);
     
+    
 
     const avatarLocalPath = req.files?.avatar[0]?.path;
     //const coverImageLocalPath = req.files?.coverImage[0]?.path;
