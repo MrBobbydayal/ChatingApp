@@ -28,11 +28,11 @@ const registerUser = asyncHandler( async (req, res) => {
             
 
 
-    const {fullName, email, username, password,number } = req.body
-    console.log(fullName, email, username, password,number);
+    const {fullName, email, username,gender, password,number } = req.body
+    console.log(fullName, email, username, password,number,gender);
 
     if (
-        [fullName, email, username, password,number].some((field) => field?.trim() === "")
+        [fullName, email, username,gender, password,number].some((field) => field?.trim() === "")
     ) {
         throw new ApiError(400, "All fields are required")
     }
@@ -48,27 +48,31 @@ const registerUser = asyncHandler( async (req, res) => {
     // console.log(password);
     
     
+   //For Taking Avatar from user
+    // const avatarLocalPath = req.files?.avatar[0]?.path;
+    // //const coverImageLocalPath = req.files?.coverImage[0]?.path;
 
-    const avatarLocalPath = req.files?.avatar[0]?.path;
-    //const coverImageLocalPath = req.files?.coverImage[0]?.path;
+    // if (!avatarLocalPath) {
+    //     throw new ApiError(400, "Avatar file is required")
+    // }
 
-    if (!avatarLocalPath) {
-        throw new ApiError(400, "Avatar file is required")
-    }
+    // const avatar = await uploadOnCloudinary(avatarLocalPath)
+    // console.log(avatar);
 
-    const avatar = await uploadOnCloudinary(avatarLocalPath)
-    console.log(avatar);
-
-    if (!avatar) {
-        throw new ApiError(400, "Avatar file is required at cloudinary")
-    }
+    // if (!avatar) {
+    //     throw new ApiError(400, "Avatar file is required at cloudinary")
+    // }
    
+    //avatar profile
+    const boyprofile=`https://avatar.iran.liara.run/public/boy?username=${username}`
+    const girlprofile=`https://avatar.iran.liara.run/public/girl?username=${username}`
 
     const user = await User.create({
         fullName,
-        avatar: avatar.url,
+        avatar: gender==="male"?boyprofile:girlprofile,
         email, 
         number,
+        gender,
         password,
         username: username.toLowerCase()
         
@@ -141,7 +145,7 @@ const loginUser = asyncHandler(async (req, res) =>{
             "User logged In Successfully"
         )
     )
-
+    
 })
 
 

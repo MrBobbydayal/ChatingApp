@@ -20,11 +20,18 @@ app.use(express.urlencoded({extended: true, limit: "16kb"}))
 app.use(express.static("public"))
 app.use(cookieParser())
 
-import router from "./routers/user.routes.js";
 
 
+
+import Userrouter from "./routers/user.routes.js";
 // app.use("/api/v1/Bobby/chatApp/users",userRouter)
-app.use("/api/v1/Bobby/chatApp/users",router)
+app.use("/api/v1/Bobby/chatApp/users",Userrouter);
+
+import Messagerouter from "./routers/message.routes.js"
+app.use("/api/v1/Bobby/chatApp/message",Messagerouter);
+
+import Chatuserrouter from "./routers/chatUser.routers.js"
+app.use("/api/v1/Bobby/chatApp/chatUser",Chatuserrouter);
 
 export { app }
 
