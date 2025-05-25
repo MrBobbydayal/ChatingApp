@@ -4,14 +4,35 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Signup from './pages/signup'
 import Login from './pages/login'
-function App() {
-  const [count, setCount] = useState(0)
+import Home  from './pages/Home'
+import Navbar from './components/Navbar'
 
-  return (
-    <>
-      <Signup/>
-    </>
-  )
-}
+import {createBrowserRouter , RouterProvider} from 'react-router-dom'
 
-export default App
+export const App = () => {
+  const router=createBrowserRouter([
+    {
+      path:"/",
+      element:<Login />
+    },
+    {
+      path:"/signup",
+      element:<Signup />
+    },
+    {
+      path:"/home",
+      element:<Home/>
+    },
+  ])
+    return (
+      <>
+      <RouterProvider router={router}/>
+      </>
+    )
+  }
+
+  export default App
+
+
+
+
