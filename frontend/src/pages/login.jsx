@@ -1,7 +1,42 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink ,Navigate,useNavigate} from 'react-router-dom';
 
 export default function Login() {
+
+      const[input,setInput]=useState({
+               username:'',
+               email:'',
+               password:'',
+                     });
+const navigate=useNavigate();
+       const handlesubmit=async(e)=>{
+                         e.preventDefault();
+                         console.log(input);
+
+                         
+    try {
+      const res = await fetch("http://localhost:8000/api/v1/Bobby/chatApp/users/login", {
+        method: "POST",
+        credentials:'include',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input)
+      });
+      if(res.status==200){
+        console.log(res,"response at login");
+        navigate('/home')
+      }
+      else if(res.status==404){
+        alert('User Does Not Exist')
+      }else if(res.status==401){
+        alert('Invalid User Credential')
+      }else if(res.status==400){
+        alert('Email or Username Required')
+      }
+    } catch (err) {
+      console.error("Error:", err);
+    }
+
+                            };
   
   return (
    <div className="flex items-center justify-center min-h-screen px-4 py-6">
@@ -10,13 +45,15 @@ export default function Login() {
       Login <span className="text-blue-400">ChatApp</span>
     </h1>
 
-    <form className="space-y-4">
+    <form className="space-y-4" onSubmit={handlesubmit}>
       <div>
         <label className="block text-sm mb-1">Username</label>
         <input
           type="text"
           placeholder="username"
           className="w-full px-4 py-2 rounded-lg bg-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          value={input.username}
+          onChange={(e)=>{setInput({...input, username: e.target.value})}}
         />
       </div>
       <div>
@@ -25,6 +62,8 @@ export default function Login() {
           type="email"
           placeholder="xyz@gmail.com"
           className="w-full px-4 py-2 rounded-lg bg-white/20  focus:outline-none focus:ring-2 focus:ring-blue-400"
+          value={input.email}
+          onChange={(e)=>{setInput({...input, email: e.target.value})}}
         />
       </div>
       <div>
@@ -33,6 +72,8 @@ export default function Login() {
           type="password"
           placeholder="**********"
           className="w-full px-4 py-2 rounded-lg bg-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400"
+           value={input.password}
+          onChange={(e)=>{setInput({...input, password: e.target.value})}}
         />
       </div>
       <div>
