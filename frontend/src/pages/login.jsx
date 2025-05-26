@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { NavLink ,Navigate,useNavigate} from 'react-router-dom';
+import useConversation from '../zustand/useConversation.js';
 
 export default function Login() {
 
+  const{user,setUser}=useConversation();
       const[input,setInput]=useState({
                username:'',
                email:'',
@@ -22,7 +24,11 @@ const navigate=useNavigate();
         body: JSON.stringify(input)
       });
       if(res.status==200){
-        console.log(res,"response at login");
+        console.log("response at login",res);
+        const data= await res.json();
+        setUser(data.data.user);
+        console.log("data at login as response",data)
+        console.log("user data logined",data.data.user)
         navigate('/home')
       }
       else if(res.status==404){
